@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dülmen Roleplay – Charaktere</title>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { margin: 0; color: #eef7ff; background: transparent; }
+    #overlay { display: none; width: 100vw; min-height: 100vh; align-items: center; justify-content: center; background: rgba(5, 10, 17, .78); }
+    #overlay.show { display: flex; }
+    main { width: min(1050px, 92vw); padding: 30px; border: 1px solid rgba(92, 201, 255, .3); border-radius: 15px; background: #0d1724; box-shadow: 0 28px 90px #000; }
+    .tag { margin: 0; color: #6ed7ff; font-size: 12px; font-weight: bold; letter-spacing: 3px; } h1 { margin: 8px 0; } #subtitle { color: #a9b8c8; }
+    #slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+    .slot { min-height: 210px; padding: 18px; border: 1px solid #2b435a; border-radius: 10px; background: #111f30; display: flex; flex-direction: column; }
+    .slot small { color: #6ed7ff; letter-spacing: 1px; } .slot h2 { margin: 26px 0 5px; } .muted { color: #9caabd; font-size: 14px; }
+    button { border: 0; border-radius: 7px; padding: 11px; cursor: pointer; color: #06101a; font-weight: bold; background: #6ed7ff; } button:hover { background: #a4e8ff; } .slot button { margin-top: auto; }
+    #form { display: none; margin-top: 22px; padding-top: 20px; border-top: 1px solid #2b435a; } #form.show { display: block; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } label { color: #b9c8d6; font-size: 13px; } input, select { width: 100%; display: block; margin-top: 6px; padding: 11px; color: white; background: #09121d; border: 1px solid #3a5873; border-radius: 6px; } .actions { margin-top: 16px; display: flex; gap: 10px; } .secondary { color: #eaf5ff; background: #35485b; } #message { color: #ff9ca5; min-height: 20px; }
+    @media(max-width: 720px) { #slots, .grid { grid-template-columns: 1fr; } main { margin: 14px; } }
+  </style>
+</head>
+<body>
+  <div id="overlay"><main>
+    <p class="tag">DÜLMEN ROLEPLAY</p><h1>Charakterverwaltung</h1><p id="subtitle">Wähle eine Identität, um Los Santos zu betreten.</p><p id="message"></p>
+    <section id="slots"></section>
+    <form id="form"><h2>Charakter erstellen</h2><div class="grid">
+      <label>Vorname<input name="firstName" maxlength="24" required></label>
+      <label>Nachname<input name="lastName" maxlength="24" required></label>
+      <label>Geburtsdatum<input name="birthDate" type="date" min="1900-01-01" max="2010-12-31" required></label>
+      <label>Geschlecht<select name="gender" id="gender"></select></label>
+    </div><div class="actions"><button type="button" id="cancel" class="secondary">Abbrechen</button><button type="submit">Charakter speichern</button></div></form>
+  </main></div>
+  <script>
+    const overlay = document.querySelector('#overlay'), slots = document.querySelector('#slots'), form = document.querySelector('#form'), message = document.querySelector('#message');
+    let characters = [], config = {}, selectedSlot = null;
+    const resource = () => GetParentResourceName();
+    async function post(name, data = {}) { const response = await fetch(`https://${resource()}/${name}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) }); return response.json(); }
+    const safe = value => { const node = document.createElement('span'); node.textContent = value ?? ''; return node.innerHTML; };
+    const formatDate = value => { if (typeof value === 'number' || /^\d{11,}$/.test(String(value))) { return new Date(Number(value)).toLocaleDateString('de-DE', { timeZone: 'UTC' }); } return String(value || ''); };
+    function render() { slots.innerHTML = ''; for (let slot = 1; slot <= (config.maxCharacters || 3); slot++) { const character = characters.find(c => Number(c.slot) === slot); const card = document.createElement('article'); card.className = 'slot'; if (character) { card.innerHTML = `<small>SLOT ${slot}</small><h2>${safe(character.first_name)} ${safe(character.last_name)}</h2><p class="muted">${safe(character.job || 'unemployed')}<br>Geboren: ${safe(formatDate(character.birth_date))}</p><button>Spielen</button>`; card.querySelector('button').onclick = () => post('select', {slot}); } else { card.innerHTML = `<small>SLOT ${slot}</small><p class="muted">Dieser Slot ist noch frei.</p><button>Charakter erstellen</button>`; card.querySelector('button').onclick = () => openForm(slot); } slots.appendChild(card); } }
+    function openForm(slot) { selectedSlot = slot; form.classList.add('show'); message.textContent = ''; }
+    function options(id, values) { document.querySelector(id).innerHTML = values.map(x => `<option value="${safe(x.value)}">${safe(x.label)}</option>`).join(''); }
+    window.addEventListener('message', async event => { if (event.data.action === 'close') { overlay.classList.remove('show'); return; } if (event.data.action !== 'open') return; config = event.data.data || {}; overlay.classList.add('show'); options('#gender', config.genders || []); render(); post('ready'); const result = await post('load'); if (result.ok) { characters = result.characters || []; render(); } else message.textContent = result.error || 'Datenbank konnte nicht geladen werden.'; });
+    document.querySelector('#cancel').onclick = () => form.classList.remove('show');
+    form.onsubmit = async event => { event.preventDefault(); const data = Object.fromEntries(new FormData(form)); data.slot = selectedSlot; const result = await post('create', data); if (result.ok) { characters = result.characters || []; form.reset(); form.classList.remove('show'); render(); } else message.textContent = result.error || 'Charakter konnte nicht erstellt werden.'; };
+  </script>
+</body>
+</html>

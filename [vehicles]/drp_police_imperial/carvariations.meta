@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CVehicleModelInfoVariation>
+  <variationData>
+    <Item>
+      <modelName>imperialdepol</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            5 
+            0
+            8
+            4
+            93
+            134	
+          </indices>
+          <liveries />
+        </Item>	
+      </colors>
+      <kits>
+        <Item>0_default_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>police guv plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="1" />
+      <sirenSettings value="56769" />
+    </Item>
+  </variationData>
+</CVehicleModelInfoVariation>

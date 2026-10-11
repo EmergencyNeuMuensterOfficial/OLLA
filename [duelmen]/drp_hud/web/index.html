@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>Dülmen Roleplay HUD</title>
+</head>
+<body>
+  <main id="hud" class="hidden">
+    <section class="identity panel">
+      <div class="brand-mark">D</div>
+      <div class="identity-copy"><p class="eyebrow">DÜLMEN ROLEPLAY</p><p id="character-name" class="character-name">Lädt…</p><p id="job" class="job">unemployed</p></div>
+      <div class="clock"><span id="time">00:00</span><small>LOS SANTOS</small></div>
+    </section>
+    <section class="economy panel"><div class="money-row"><span class="money-icon cash">$</span><div><small>BARGELD</small><strong id="cash">0 €</strong></div></div><div class="money-row"><span class="money-icon bank">▣</span><div><small>BANK</small><strong id="bank">0 €</strong></div></div></section>
+    <section class="vitals" aria-label="Lebensanzeige">
+      <div class="vital health"><span>♥</span><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle id="health-fill" class="fill" cx="18" cy="18" r="15.5"/></svg></div>
+      <div class="vital armour"><span>◆</span><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle id="armour-fill" class="fill" cx="18" cy="18" r="15.5"/></svg></div>
+      <div class="vital hunger"><span>♨</span><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle id="hunger-fill" class="fill" cx="18" cy="18" r="15.5"/></svg></div>
+      <div class="vital thirst"><span>♦</span><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle id="thirst-fill" class="fill" cx="18" cy="18" r="15.5"/></svg></div>
+      <div class="vital stamina"><span>ϟ</span><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle id="stamina-fill" class="fill" cx="18" cy="18" r="15.5"/></svg></div>
+    </section>
+    <section class="world panel"><span id="voice" class="voice">● NORMAL</span><span id="street">Los Santos</span></section>
+    <section id="vehicle" class="vehicle panel"><strong id="speed">0</strong><span>KM/H</span></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

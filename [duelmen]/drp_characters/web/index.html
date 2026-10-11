@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <title>Dülmen Roleplay</title>
+</head>
+<body>
+  <main id="app" class="hidden">
+    <section class="panel">
+      <p class="eyebrow">DÜLMEN ROLEPLAY</p>
+      <h1>Select your character</h1>
+      <p id="status">Choose a character to enter Los Santos.</p>
+      <div id="character-list" class="characters"></div>
+      <button id="show-create" class="primary">+ Create character</button>
+      <form id="create-form" class="hidden">
+        <div class="form-row"><input name="firstName" maxlength="24" placeholder="First name" required><input name="lastName" maxlength="24" placeholder="Last name" required></div>
+        <label>Date of birth <input name="birthDate" type="date" required></label>
+        <label>Gender <select name="gender"><option value="male">Male</option><option value="female">Female</option></select></label>
+        <div class="actions"><button type="button" id="cancel-create" class="secondary">Back</button><button type="submit" class="primary">Create & play</button></div>
+      </form>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

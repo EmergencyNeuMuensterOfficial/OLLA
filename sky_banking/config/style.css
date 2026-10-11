@@ -1,0 +1,9 @@
+:root {
+	--primary: #0c97f3;
+	--secondary: #1b608b;
+	--background: #17242c;
+	--sidebar-background: #22323b;
+	--banner-background: linear-gradient(45deg, #306e94, #205f86);
+	--button-background: linear-gradient(to right, #01b2bb -30%, #4496dd 80%);
+    --sidebar-banner-background: linear-gradient(90deg, #18374b, #24506b);
+}
